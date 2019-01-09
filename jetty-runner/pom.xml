@@ -35,23 +35,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <configuration>
-            <!-- jetty-runner is not an OSGi component -->
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-         <archive>
-            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-         </archive>
-        </configuration>
-      </plugin>
     </plugins>
     <pluginManagement>
       <plugins>
@@ -61,6 +44,28 @@
           <configuration>
             <!-- Clirr fails with "org.apache.tools.ant.Task not found" on this project -->
             <skip>true</skip>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <configuration>
+            <!-- jetty-runner is not an OSGi component -->
+            <skip>true</skip>
+            <!-- there is no way to skip MANIFEST creation by the plugin -->
+            <manifestLocation>${java.io.tmpdir}/NON_USED_MANIFEST</manifestLocation>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestFile>src/main/resources/MANIFEST.MF</manifestFile>
+              <manifest>
+                <mainClass>org.eclipse.jetty.runner.Runner</mainClass>
+              </manifest>
+            </archive>
           </configuration>
         </plugin>
       </plugins>
